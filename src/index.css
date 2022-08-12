@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --reach-dialog: 1;
+  --reach-menubutton: 1;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .slide-down[data-reach-menu-list],
+  .slide-down[data-reach-menu-items] {
+    animation: slide-down 0.2s ease;
+  }
+}
+
+@layer components {
+  [data-reach-menu-item][data-selected] {
+    @apply active:bg-gray-100 active:text-gray-900  text-gray-700;
+  }
+  [data-reach-combobox-option][data-highlighted] {
+    @apply active:bg-gray-100 active:text-gray-900 text-gray-700;
+  }
+}

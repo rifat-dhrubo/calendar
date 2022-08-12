@@ -11,6 +11,9 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@reach/dialog": "^0.17.0",
+    "@reach/menu-button": "^0.17.0",
+    "framer-motion": "^7.1.0",
     "lint-staged": "^13.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

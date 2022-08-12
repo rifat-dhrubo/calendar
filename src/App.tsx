@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import React from 'react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 
 import DayLabel from './components/DayLabel/DayLabel';
+import Modal from './components/Modal/Modal';
 import TimeLabel from './components/TimeLabel';
 import getWeekDates from './lib/get-week';
 
@@ -35,15 +37,21 @@ const timeArray = [
 ] as const;
 
 function App() {
-  const [count, setCount] = React.useState(0);
+  const [showEventModal, setShowEventModal] = React.useState(false);
 
   const weekDates = React.useMemo(() => getWeekDates(new Date()), []);
+
+  const openModal = () => setShowEventModal(true);
 
   return (
     <div className="flex flex-col h-full">
       <header className="relative z-40 flex items-center justify-between flex-none px-6 py-4 border-b border-gray-200">
         <h1 className="text-lg font-semibold text-gray-900">
-          <time dateTime="2022-01">
+          <time
+            dateTime={new Intl.DateTimeFormat('en-GB', {
+              dateStyle: 'full',
+            }).format(new Date())}
+          >
             {new Intl.DateTimeFormat('en-GB', { dateStyle: 'full' }).format(
               new Date(),
             )}
@@ -51,18 +59,25 @@ function App() {
         </h1>
         <div className="flex items-center">
           <div className="hidden md:ml-4 md:flex md:items-center">
+            <button
+              type="button"
+              className="px-4 py-2 ml-6 text-sm font-medium text-gray-800 bg-gray-200 border border-transparent rounded-md shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-100 focus:ring-offset-2"
+            >
+              Print availability
+            </button>
             <div className="w-px h-6 ml-6 bg-gray-300" />
             <button
               type="button"
               className="px-4 py-2 ml-6 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={openModal}
             >
-              Add event
+              Add availability
             </button>
           </div>
-          <div className="relative ml-6 md:hidden">
-            <button
+          <Menu className="relative ml-6 md:hidden">
+            <MenuButton
               type="button"
-              className="flex items-center p-2 -mx-2 text-gray-400 border border-transparent rounded-full hover:text-gray-500"
+              className="flex items-center p-2 -mx-2 text-gray-400 border border-transparent rounded-full hover:text-gray-500 ml-2"
               id="menu-0-button"
               aria-expanded="false"
               aria-haspopup="true"
@@ -70,44 +85,42 @@ function App() {
               <span className="sr-only">Open menu</span>
 
               <HiDotsHorizontal className="w-5 h-5" />
-            </button>
-            {/* Dropdown menu, show/hide based on menu state. Entering: "transition
-            ease-out duration-100" From: "transform opacity-0 scale-95" To:
-            "transform opacity-100 scale-100" Leaving: "transition ease-in
-            duration-75" From: "transform opacity-100 scale-100" To: "transform
-            opacity-0 scale-95" */}
-            <div
-              className="absolute right-0 mt-3 overflow-hidden origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-36 ring-1 ring-black ring-opacity-5 focus:outline-none"
+            </MenuButton>
+
+            <MenuList
+              portal={false}
+              className="absolute z-40 top-12 right-0 mt-3 overflow-hidden origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg w-36 ring-1 ring-black ring-opacity-5 focus:outline-none slide-down"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="menu-0-button"
               tabIndex={-1}
             >
               <div className="py-1" role="none">
-                {/* Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" */}
-                <a
-                  href="#"
+                <MenuItem
+                  as="button"
                   className="block px-4 py-2 text-sm text-gray-700"
                   role="menuitem"
                   tabIndex={-1}
                   id="menu-0-item-0"
+                  onSelect={openModal}
                 >
-                  Create event
-                </a>
+                  Add availability
+                </MenuItem>
               </div>
               <div className="py-1" role="none">
-                <a
-                  href="#"
+                <MenuItem
+                  as="button"
                   className="block px-4 py-2 text-sm text-gray-700"
                   role="menuitem"
                   tabIndex={-1}
                   id="menu-0-item-1"
+                  onSelect={() => {}}
                 >
-                  Go to today
-                </a>
+                  Print availability
+                </MenuItem>
               </div>
-            </div>
-          </div>
+            </MenuList>
+          </Menu>
         </div>
       </header>
       <div className="flex flex-col flex-auto overflow-auto bg-white">
@@ -117,14 +130,14 @@ function App() {
         >
           <div className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5 sm:pr-8">
             <div className="grid grid-cols-7 text-sm leading-6 text-gray-500 sm:hidden">
-              {weekDates.map((date, index) => (
+              {weekDates.map((date) => (
                 <DayLabel date={date} short={true} />
               ))}
             </div>
 
             <div className="hidden grid-cols-7 -mr-px text-sm leading-6 text-gray-500 border-r border-gray-100 divide-x divide-gray-100 sm:grid">
               <div className="col-end-1 w-14" />
-              {weekDates.map((date, index) => (
+              {weekDates.map((date) => (
                 <DayLabel date={date} />
               ))}
             </div>
@@ -173,7 +186,7 @@ function App() {
                     className="absolute flex flex-col px-2 py-0.5 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-blue-50 hover:bg-blue-100 "
                   >
                     <p className="order-1 font-semibold text-blue-700">
-                      Breakfasta ad asd asd asd asd as
+                      Breakfast
                     </p>
                     <p className="text-blue-500 group-hover:text-blue-700">
                       <time dateTime="2022-01-12T06:00">6:00 AM</time>
@@ -197,6 +210,9 @@ function App() {
           </div>
         </div>
       </div>
+      <Modal showModal={showEventModal} setShowModal={setShowEventModal}>
+        <h1>hello</h1>
+      </Modal>
     </div>
   );
 }
