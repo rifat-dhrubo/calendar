@@ -3,10 +3,13 @@ import { Menu, MenuButton, MenuItem, MenuList } from '@reach/menu-button';
 import React from 'react';
 import { HiDotsHorizontal } from 'react-icons/hi';
 
+import AddEventModal from './components/AddEventModal';
 import DayLabel from './components/DayLabel/DayLabel';
+import FreeTime from './components/FreeTime';
 import Modal from './components/Modal/Modal';
 import TimeLabel from './components/TimeLabel';
 import getWeekDates from './lib/get-week';
+import { DataFieldType } from './lib/schema';
 
 // 24hr time array
 const timeArray = [
@@ -38,10 +41,12 @@ const timeArray = [
 
 function App() {
   const [showEventModal, setShowEventModal] = React.useState(false);
+  const [event, setEvent] = React.useState<DataFieldType>([]);
 
   const weekDates = React.useMemo(() => getWeekDates(new Date()), []);
 
   const openModal = () => setShowEventModal(true);
+  const closeModal = () => setShowEventModal(false);
 
   return (
     <div className="flex flex-col h-full">
@@ -59,16 +64,13 @@ function App() {
         </h1>
         <div className="flex items-center">
           <div className="hidden md:ml-4 md:flex md:items-center">
-            <button
-              type="button"
-              className="px-4 py-2 ml-6 text-sm font-medium text-gray-800 bg-gray-200 border border-transparent rounded-md shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-100 focus:ring-offset-2"
-            >
+            <button type="button" className="secondary__button">
               Print availability
             </button>
             <div className="w-px h-6 ml-6 bg-gray-300" />
             <button
               type="button"
-              className="px-4 py-2 ml-6 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="primary__button"
               onClick={openModal}
             >
               Add availability
@@ -77,7 +79,7 @@ function App() {
           <Menu className="relative ml-6 md:hidden">
             <MenuButton
               type="button"
-              className="flex items-center p-2 -mx-2 text-gray-400 border border-transparent rounded-full hover:text-gray-500 ml-2"
+              className="flex items-center p-2 -mx-2 text-gray-400 border border-transparent rounded-full hover:text-gray-500 md:hidden"
               id="menu-0-button"
               aria-expanded="false"
               aria-haspopup="true"
@@ -175,43 +177,20 @@ function App() {
                   gridTemplateRows: '1.75rem repeat(24, minmax(0, 1fr)) auto',
                 }}
               >
-                <li
-                  className="relative flex mt-px sm:col-start-3 "
-                  style={{
-                    gridRow: '22 / span 1',
-                  }}
-                >
-                  <a
-                    href="#"
-                    className="absolute flex flex-col px-2 py-0.5 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-blue-50 hover:bg-blue-100 "
-                  >
-                    <p className="order-1 font-semibold text-blue-700">
-                      Breakfast
-                    </p>
-                    <p className="text-blue-500 group-hover:text-blue-700">
-                      <time dateTime="2022-01-12T06:00">6:00 AM</time>
-                    </p>
-                  </a>
-                </li>
-                {/* <li className="relative flex mt-px sm:col-start-3" style="grid-row: 92 / span 30">
-                <a href="#" className="absolute flex flex-col p-2 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-pink-50 hover:bg-pink-100">
-                  <p className="order-1 font-semibold text-pink-700">Flight to Paris</p>
-                  <p className="text-pink-500 group-hover:text-pink-700"><time datetime="2022-01-12T07:30">7:30 AM</time></p>
-                </a>
-              </li>  */}
-                {/* <li className="relative hidden mt-px sm:col-start-6 sm:flex" style="grid-row: 122 / span 24">
-                <a href="#" className="absolute flex flex-col p-2 overflow-y-auto text-xs leading-5 bg-gray-100 rounded-lg group inset-1 hover:bg-gray-200">
-                  <p className="order-1 font-semibold text-gray-700">Meeting with design team at Disney</p>
-                  <p className="text-gray-500 group-hover:text-gray-700"><time datetime="2022-01-15T10:00">10:00 AM</time></p>
-                </a>
-              </li>  */}
+                {event.map((val) => (
+                  <FreeTime
+                    startTime={Number(val.startTime)}
+                    endTime={Number(val.endTime)}
+                    day={Number(val.day)}
+                  />
+                ))}
               </ol>
             </div>
           </div>
         </div>
       </div>
       <Modal showModal={showEventModal} setShowModal={setShowEventModal}>
-        <h1>hello</h1>
+        <AddEventModal closeModal={closeModal} setValue={setEvent} />
       </Modal>
     </div>
   );

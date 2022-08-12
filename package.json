@@ -11,15 +11,20 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@hookform/devtools": "^4.2.2",
+    "@hookform/resolvers": "^2.9.7",
     "@reach/dialog": "^0.17.0",
     "@reach/menu-button": "^0.17.0",
     "framer-motion": "^7.1.0",
     "lint-staged": "^13.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.4.0"
+    "react-hook-form": "^7.34.0",
+    "react-icons": "^4.4.0",
+    "zod": "^3.18.0"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.2",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.0",
@@ -39,6 +44,6 @@
     "vite": "^3.0.0"
   },
   "lint-staged": {
-    "src/*.{js, jsx,ts,tsx}": "eslint --cache --fix"
+    "src/*.{js, jsx,ts,tsx}": "eslint --fix"
   }
 }

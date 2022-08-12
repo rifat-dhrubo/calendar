@@ -1,27 +1,27 @@
 module.exports = {
-  extends: ["react-app", "prettier"],
-  plugins: ["prettier"],
+  extends: ['react-app', 'prettier'],
+  plugins: ['prettier'],
   rules: {
-    "prettier/prettier": "error",
-    "import/order": [
-      "warn",
+    'prettier/prettier': 'error',
+    'import/order': [
+      'warn',
       {
         groups: [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index",
-          "object",
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
         ],
-        "newlines-between": "always",
+        'newlines-between': 'always',
         alphabetize: {
-          order: "asc",
+          order: 'asc',
           caseInsensitive: true,
         },
       },
     ],
-    "react/self-closing-comp": "error",
+    'react/self-closing-comp': 'error',
   },
 };
